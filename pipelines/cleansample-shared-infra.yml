@@ -4,10 +4,8 @@ pool:
   vmImage: windows-latest
 
 variables:
-- template: /vars/global.yml
-
-variables:
   mainBicep: cleansample-shared-infra.bicep
+- template: /vars/global.yml
 
 stages:
 - template: /templates/stage/shared-infra-stage.yml
