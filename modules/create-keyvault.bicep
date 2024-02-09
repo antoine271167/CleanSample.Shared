@@ -1,8 +1,8 @@
 targetScope = 'resourceGroup'
 
-param location string = resourceGroup().location
 param functionAppName string = ''
 param keyVaultName string
+param location string = resourceGroup().location
 
 resource functionApp 'Microsoft.Web/sites@2022-03-01' existing = if (functionAppName != '') {
   name: functionAppName

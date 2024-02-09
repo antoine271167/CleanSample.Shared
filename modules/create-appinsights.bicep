@@ -1,8 +1,8 @@
 targetScope = 'resourceGroup'
 
-param location string = resourceGroup().location
 param resourcesName string
 param functionAppName string = ''
+param location string = resourceGroup().location
 
 var logAnalyticsWorkspaceName = '${toLower(resourcesName)}-la'
 var applicationInsightsName = '${toLower(resourcesName)}-ai'
