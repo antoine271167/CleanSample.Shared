@@ -14,12 +14,12 @@ stages:
     environmentName: dev
     mainBicep: $(mainBicep)
 
-- template: /templates/stage/shared-infra-stage.yml
-  parameters:
-    environmentName: tst
-    mainBicep: $(mainBicep)
+# - template: /templates/stage/shared-infra-stage.yml
+#   parameters:
+#     environmentName: tst
+#     mainBicep: $(mainBicep)
 
-- template: /templates/stage/shared-infra-stage.yml
-  parameters:
-    environmentName: prd
-    mainBicep: $(mainBicep)
+# - template: /templates/stage/shared-infra-stage.yml
+#   parameters:
+#     environmentName: prd
+#     mainBicep: $(mainBicep)
