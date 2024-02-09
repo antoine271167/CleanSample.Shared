@@ -1,0 +1,46 @@
+parameters:
+- name: azureSubscription
+  type: string
+- name: appName
+  type: string
+- name: appSettings
+  type: string
+  default: ''
+- name: envAppSettings
+  type: string
+- name: appRegClientId
+  type: string
+  default: ''
+
+steps:
+- ${{ if eq(parameters.appSettings, '') }}:
+  - task: AzureCLI@2
+    displayName: 'Create Function App'
+    inputs:
+      azureSubscription: ${{parameters.azureSubscription}}
+      scriptType: pscore
+      scriptLocation: inlineScript
+      inlineScript: |
+        Write-Host 'appSettings is empty'
+        az deployment group create `
+          --name ${{parameters.appName}}-dg `
+          --resource-group ${{parameters.appName}}-rg `
+          --template-file .\Fiberwolf.Resources\bicep\functionapp-create.bicep `
+          --parameters ${{parameters.envAppSettings}} `
+          --parameters appRegClientId=${{parameters.appRegClientId}}
+
+- ${{ if ne(parameters.appSettings, '') }}:
+  - task: AzureCLI@2
+    displayName: 'Create Function App'
+    inputs:
+      azureSubscription: ${{parameters.azureSubscription}}
+      scriptType: pscore
+      scriptLocation: inlineScript
+      inlineScript: |
+        az deployment group create `
+          --name ${{parameters.appName}}-dg `
+          --resource-group ${{parameters.appName}}-rg `
+          --template-file .\Fiberwolf.Resources\bicep\functionapp-create.bicep `
+          --parameters ${{parameters.appSettings}} `
+          --parameters ${{parameters.envAppSettings}} `
+          --parameters appRegClientId=${{parameters.appRegClientId}}

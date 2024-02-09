@@ -1,0 +1,44 @@
+parameters:
+- name: azureSubscription
+  type: string
+- name: functionAppName
+  type: string
+- name: resourceGroupName
+  type: string
+- name: settings
+  type: string
+- name: useStagingSlot
+  type: string
+  default: false
+- name: slotName
+  type: string
+  default: staging
+  
+steps:
+- ${{ if eq(parameters.useStagingSlot, true) }}:
+  - task: AzureCLI@2
+    displayName: AppSettings
+    inputs:
+      azureSubscription: ${{parameters.azureSubscription}}
+      scriptType: bash
+      scriptLocation: "inlineScript"
+      addSpnToEnvironment: true
+      inlineScript: |
+        az functionapp config appsettings set \
+        --resource-group ${{parameters.resourceGroupName}} \
+        --name ${{parameters.functionAppName}} \
+        --slot ${{parameters.slotName}} \
+        --slot-settings ${{parameters.settings}}
+- ${{ if ne(parameters.useStagingSlot, true) }}:
+  - task: AzureCLI@2
+    displayName: AppSettings
+    inputs:
+      azureSubscription: ${{parameters.azureSubscription}}
+      scriptType: bash
+      scriptLocation: "inlineScript"
+      addSpnToEnvironment: true
+      inlineScript: |
+        az functionapp config appsettings set \
+        --resource-group ${{parameters.resourceGroupName}} \
+        --name ${{parameters.functionAppName}} \
+        --settings ${{parameters.settings}}

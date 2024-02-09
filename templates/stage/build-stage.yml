@@ -1,0 +1,45 @@
+parameters:
+- name: env
+  type: object
+  default:
+    dummy: "dummy"
+- name: startStorageEmulator
+  type: boolean
+  default: false
+- name: setHubName
+  type: boolean
+  default: false
+- name: hostJsonPath
+  type: string
+  default: ""
+- name: hubNamePrefix
+  type: string
+  default: ""
+
+stages:
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+    - template: ../task/dotnet-restore-config-task.yml
+    - template: ../task/dotnet-build-projects-task.yml
+      parameters:
+        projects: $(buildProjectFile)
+    - template: ../task/start-storage-emulator-task.yml 
+      parameters:
+        startStorageEmulator: ${{parameters.startStorageEmulator}}
+    - template: ../task/dotnet-test-projects-task.yml 
+      parameters:
+        projects: $(testProjectFiles)
+        env: ${{parameters.env}}
+    - template: ../task/code-coverage-task.yml
+  - template: ../job/publish-job.yml
+    parameters:
+      setHubName: ${{parameters.setHubName}}
+      hostJsonPath: ${{parameters.hostJsonPath}}
+      hubNamePrefix: ${{parameters.hubNamePrefix}}
+      buildProjectFile: $(buildProjectFile)
+      publishProjectFiles: $(publishProjectFiles)
+      projectFileName: $(projectFileName)

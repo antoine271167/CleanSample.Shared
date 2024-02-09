@@ -1,0 +1,26 @@
+trigger: none
+
+pool:
+  vmImage: windows-latest
+
+variables:
+- template: /vars/global.yml
+
+variables:
+  mainBicep: cleansample-shared-infra.bicep
+
+stages:
+- template: /templates/stage/shared-infra-stage.yml
+  parameters:
+    environmentName: dev
+    mainBicep: $(mainBicep)
+
+- template: /templates/stage/shared-infra-stage.yml
+  parameters:
+    environmentName: tst
+    mainBicep: $(mainBicep)
+
+- template: /templates/stage/shared-infra-stage.yml
+  parameters:
+    environmentName: prd
+    mainBicep: $(mainBicep)

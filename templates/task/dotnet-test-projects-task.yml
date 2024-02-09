@@ -1,0 +1,20 @@
+parameters:
+  - name: configuration
+    type: string
+    default: Release
+  - name: env
+    type: object
+    default:
+      dummy: "dummy"
+  - name: projects
+    type: string
+    default: "**/*.sln"
+
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: "Dotnet Test"
+    inputs:
+      command: "test"
+      projects: ${{parameters.projects}}
+      arguments: "-c=${{ parameters.configuration }} /p:CollectCoverage=true /p:CoverletOutputFormat=opencover"
+    env: ${{parameters.env}}

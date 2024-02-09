@@ -1,0 +1,13 @@
+parameters:
+  - name: artifactName
+    type: string
+    default: drop
+  - name: targetPath
+    type: string
+    default: $(Build.ArtifactStagingDirectory)
+
+steps:
+  - task: PublishPipelineArtifact@1
+    inputs:
+      artifactName: ${{parameters.artifactName}}
+      targetPath: ${{parameters.targetPath}}

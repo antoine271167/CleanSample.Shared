@@ -1,0 +1,52 @@
+parameters:
+- name: azureSubscription
+  type: string
+- name: consumerDisplayName
+  type: string
+- name: providerDisplayName
+  type: string
+- name: permissionName
+  type: string
+
+steps:
+- task: AzureCLI@2
+  displayName: "Create Role Assignment '${{parameters.permissionName}}'"
+  inputs:
+    azureSubscription: ${{parameters.azureSubscription}}
+    scriptType: ps
+    scriptLocation: inlineScript
+    inlineScript: |
+      Write-Host "# Checking for module AzureAD"
+      $modules = Get-Module -ListAvailable | Where-Object {$_.Name -eq 'AzureAD'}
+      if(-not $modules) {
+        Write-Host "# Installing module"
+        Install-Module -Name AzureAD -Force -Verbose -Scope CurrentUser
+      }
+
+      $permissionName = "${{parameters.permissionName}}"
+
+      Write-Host "# Connect AzureAD"
+      $account = az account show | ConvertFrom-Json
+      $accountId = $account.id
+      $tenantId = $account.tenantId
+      $accessToken = az account get-access-token --resource https://graph.windows.net --query accessToken --output tsv
+      Connect-AzureAD -AadAccessToken $accessToken -AccountId $accountId -TenantId $tenantId
+
+      Write-Host "# Getting Consumer AzureADServicePrincipal ${{parameters.consumerDisplayName}}"
+      $consumer = Get-AzureADServicePrincipal -Filter "displayName eq '${{parameters.consumerDisplayName}}'"
+      
+      Write-Host "# Getting Provider AzureADServicePrincipal ${{parameters.providerDisplayName}}"
+      $provider = Get-AzureADServicePrincipal -Filter "displayName eq '${{parameters.providerDisplayName}}'"
+
+      Write-Host "# Getting AppRole ${{parameters.permissionName}}"
+      $approle = $provider.AppRoles | Where-Object {$_.Value -eq $permissionName}
+
+      Write-Host "# Creating role assignment"
+      try
+      {
+        New-AzureADServiceAppRoleAssignment -ObjectId $consumer.ObjectId -PrincipalId $consumer.ObjectId -ResourceId $provider.ObjectId -Id $approle.Id
+      }
+      catch
+      {
+        Write-Host $_
+      }

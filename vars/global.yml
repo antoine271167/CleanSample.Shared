@@ -1,0 +1,5 @@
+variables:
+  azureSubscription: SubScriptionName
+  isMain: $[in(variables['Build.SourceBranch'], 'refs/heads/main', 'refs/heads/master')]
+  deployTstInfra: $[or(eq(variables.isMain, true), eq(variables['UpdateTstInfra'], 'true'))]
+  deployTstSecrets: $[or(eq(variables.isMain, true), eq(variables['UpdateTstInfra'], 'true'), eq(variables['UpdateTstSecrets'], 'true'))]

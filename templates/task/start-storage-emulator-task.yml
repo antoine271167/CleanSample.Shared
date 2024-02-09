@@ -1,0 +1,14 @@
+parameters:
+  - name: startStorageEmulator
+    type: boolean
+    default: false
+
+steps:
+  - task: CmdLine@2
+    condition: eq('${{ parameters.startStorageEmulator }}', true)
+    displayName: Create local MSSQLLocalDB and run AzureStorageEmulator
+    inputs:
+      script: |
+        sqllocaldb create MSSQLLocalDB
+        sqllocaldb start MSSQLLocalDB
+        "C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator\AzureStorageEmulator.exe" start    

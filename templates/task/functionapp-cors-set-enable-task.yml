@@ -1,0 +1,21 @@
+parameters:
+  - name: azureSubscription
+    type: string
+  - name: resourceGroup
+    type: string
+  - name: functionAppName
+    type: string
+  - name: enableCors
+    type: string
+    default: false
+    
+steps:
+  - task: AzureCLI@2
+    displayName: Enabling CORS in '${{parameters.functionAppName}}'
+    inputs:
+      azureSubscription: ${{parameters.azureSubscription}}
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        echo "# Enable CORS "
+        az resource update --name web --resource-group ${{parameters.resourceGroup}} --namespace Microsoft.Web --resource-type config --parent sites/${{parameters.functionAppName}} --set properties.cors.supportCredentials=${{parameters.enableCors}} --api-version 2015-06-01

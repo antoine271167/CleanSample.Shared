@@ -1,0 +1,36 @@
+parameters:
+- name: environmentName
+  type: string
+- name: mainBicep
+  type: string
+
+stages:
+- stage: ${{ parameters.environmentName }}
+  variables:
+    resourcesName: cleansample-${{ parameters.environmentName }}-shared
+  jobs:
+  - deployment: ${{ parameters.environmentName }}InfraDeployment
+    environment: cleansample-${{ parameters.environmentName }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          - task: AzureCLI@1
+            displayName: Create Resource Group
+            inputs:
+              azureSubscription: $(azureSubscription)
+              scriptLocation: inlineScript
+              inlineScript: az group create -n $(resourcesName)-rg -l westeurope
+          - task: AzureCLI@2
+            displayName: 'Create Shared Resources'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |
+                az deployment group create `
+                  --name $(resourcesName)-dg `
+                  --resource-group $(resourcesName)-rg `
+                  --template-file $(Build.SourcesDirectory)\pipelines\${{ parameters.mainBicep }} `
+                  --parameters resourcesName='$(resourcesName)'

@@ -1,0 +1,23 @@
+parameters:
+  - name: corsAllowedOrigins
+    type: object
+    default: []
+  - name: azureSubscription
+    type: string
+  - name: resourceGroup
+    type: string
+  - name: functionAppName
+    type: string
+
+steps:
+- ${{each url in parameters.corsAllowedOrigins}}:
+  - task: AzureCLI@2
+    displayName: Set CORS allowed origins
+    inputs:
+      azureSubscription: ${{parameters.azureSubscription}}
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        echo "# Add following allowed origins to CORS ${{url}}"
+        az functionapp cors remove -g ${{parameters.resourceGroup}} -n ${{parameters.functionAppName}} --allowed-origins ${{url}}
+        az functionapp cors add -g ${{parameters.resourceGroup}} -n ${{parameters.functionAppName}} --allowed-origins ${{url}}

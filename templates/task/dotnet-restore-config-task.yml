@@ -1,0 +1,17 @@
+parameters:
+  - name: nugetConfigPath
+    type: string
+    default: src/nuget.config
+  - name: externalFeedCredentials
+    type: string
+    default: ""
+
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: Restore
+    inputs:
+      command: restore
+      projects: "**/*.csproj"
+      feedsToUse: config
+      nugetConfigPath: ${{parameters.nugetConfigPath}}
+      externalFeedCredentials: ${{parameters.externalFeedCredentials}}
