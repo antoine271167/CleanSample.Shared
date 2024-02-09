@@ -3,13 +3,16 @@ targetScope = 'subscription'
 param location string = 'westeurope'
 param resourcesName string
 
-var resourceGroupName = '${toLower(resourcesName)}-rg'
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
+  name: '${toLower(resourcesName)}-rg'
+  location: location
+}
 
 module createAppInsights '../resources/appinsights/create-appinsights.bicep' = {
   name: 'createAppInsights'
-  scope: resourceGroup(resourceGroupName)
+  scope: resourceGroup
   params: {
-    location: location
+    location: resourceGroup.location
     resourcesName: resourcesName
   }
 }

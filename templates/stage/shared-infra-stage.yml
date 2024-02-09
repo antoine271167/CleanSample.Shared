@@ -16,12 +16,6 @@ stages:
         deploy:
           steps:
           - checkout: self
-          - task: AzureCLI@1
-            displayName: Create Resource Group
-            inputs:
-              azureSubscription: $(azureSubscription)
-              scriptLocation: inlineScript
-              inlineScript: az group create -n $(resourcesName)-rg -l westeurope
           - task: AzureCLI@2
             displayName: 'Create Shared Resources'
             inputs:
@@ -29,8 +23,7 @@ stages:
               scriptType: pscore
               scriptLocation: inlineScript
               inlineScript: |
-                az deployment group create `
-                  --name $(resourcesName)-dg `
-                  --resource-group $(resourcesName)-rg `
+                az deployment sub create `
+                  --location westeurope `
                   --template-file $(Build.SourcesDirectory)\pipelines\${{ parameters.mainBicep }} `
                   --parameters resourcesName='$(resourcesName)'
