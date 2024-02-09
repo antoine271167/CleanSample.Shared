@@ -37,7 +37,7 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   }
 }
 
-module createKeyVaultNew '../keyvault/create-keyvault.bicep' = {
+module createKeyVaultNew '../modules/create-keyvault.bicep' = {
   name: 'createKeyVaultNew'
   params: {
     location: location
@@ -113,7 +113,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
-module createAppInsights '../appinsights/create-appinsights.bicep' = {
+module createAppInsights '../modules/create-appinsights.bicep' = {
   name: 'createAppInsights'
   scope: resourceGroup(sharedResourceGroup)
   params: {
@@ -123,7 +123,7 @@ module createAppInsights '../appinsights/create-appinsights.bicep' = {
   }
 }
 
-module createKeyVault '../keyvault/create-keyvault.bicep' = {
+module createKeyVault '../modules/create-keyvault.bicep' = {
   name: 'createKeyVault'
   dependsOn: [
     keyVault

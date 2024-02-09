@@ -8,7 +8,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
   location: location
 }
 
-module createAppInsights '../resources/appinsights/create-appinsights.bicep' = {
+module createAppInsightsModule '../modules/create-appinsights.bicep' = {
   name: 'createAppInsights'
   scope: resourceGroup
   params: {
