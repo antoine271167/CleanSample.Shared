@@ -1,0 +1,21 @@
+parameters:
+- name: azureSubscription
+  type: string
+- name: appSettings
+  type: string
+- name: envAppSettings
+  type: string
+
+steps:
+- task: AzureCLI@2
+  displayName: 'Create WebApp'
+  inputs:
+    azureSubscription: ${{parameters.azureSubscription}}
+    scriptType: pscore
+    scriptLocation: inlineScript
+    inlineScript: |
+      az deployment sub create `
+        --location westeurope `
+        --template-file ./CleanSample.Shared/pipelines/webapp-create.bicep `
+        --parameters ${{parameters.appSettings}} `
+        --parameters ${{parameters.envAppSettings}}
