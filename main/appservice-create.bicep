@@ -5,8 +5,12 @@ param appName string
 param appSettings array = []
 param envAppSettings array = []
 
+var resourceGroupName = '${toLower(appName)}-rg'
+var appServicePlanName = '${toLower(appName)}-sp'
+var appServiceName = '${toLower(appName)}-as'
+
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
-  name: '${toLower(appName)}-rg'
+  name: resourceGroupName
   location: location
 }
 
@@ -15,21 +19,24 @@ module appServicePlanModule '../modules/create-appserviceplan-module.bicep' = {
   scope: resourceGroup
   params: {
     location: resourceGroup.location
-    appServicePlanName: '${toLower(appName)}-sp'
+    appServicePlanName: appServicePlanName
   }
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' existing = {
-  name: '${toLower(appName)}-sp'
+  name: appServicePlanName
   scope: resourceGroup
 }
 
 module appServiceModule '../modules/create-appservice-module.bicep' = {
   name: 'appServiceModule'
   scope: resourceGroup
+  dependsOn: [
+    appServicePlan
+  ]
   params: {
     location: resourceGroup.location
-    appServiceName: '${toLower(appName)}-as'
+    appServiceName: appServiceName
     appServicePlanId: appServicePlan.id
     appSettings: union(appSettings, envAppSettings)
   }
