@@ -16,6 +16,6 @@ steps:
     inlineScript: |
       az deployment sub create `
         --location westeurope `
-        --template-file ./CleanSample.Shared/pipelines/webapp-create.bicep `
+        --template-file ./CleanSample.Shared/pipelines/appservice-create.bicep `
         --parameters ${{parameters.appSettings}} `
         --parameters ${{parameters.envAppSettings}}

@@ -3,6 +3,7 @@ targetScope = 'resourceGroup'
 param appServiceName string
 param appServicePlanId string
 param location string = resourceGroup().location
+param appSettings array = []
 
 resource appService 'Microsoft.Web/sites@2020-06-01' = {
   name: appServiceName
@@ -11,6 +12,12 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
     serverFarmId: appServicePlanId
     siteConfig: {
       linuxFxVersion: 'DOTNETCORE|8.0'
+      appSettings: union(appSettings, [
+          {
+            name: 'SomeAppSetting'
+            value: 'SomeAppSettingValue'
+          }
+        ])
     }
   }
 }
