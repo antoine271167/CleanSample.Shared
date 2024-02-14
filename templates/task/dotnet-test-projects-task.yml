@@ -17,4 +17,4 @@ steps:
       command: "test"
       projects: ${{ parameters.projects }}
       arguments: "-c=${{ parameters.configuration }} /p:CollectCoverage=true /p:CoverletOutputFormat=opencover"
-    env: ${{parameters.env}}
+    env: ${{ parameters.env }}

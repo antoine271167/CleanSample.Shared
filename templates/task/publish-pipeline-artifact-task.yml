@@ -9,5 +9,5 @@ parameters:
 steps:
   - task: PublishPipelineArtifact@1
     inputs:
-      artifactName: ${{parameters.artifactName}}
-      targetPath: ${{parameters.targetPath}}
+      artifactName: ${{ parameters.artifactName }}
+      targetPath: ${{ parameters.targetPath }}

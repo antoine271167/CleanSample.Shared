@@ -3,8 +3,10 @@ parameters:
   type: string
 - name: testProjectFiles 
   type: string 
-- name: env 
-  type: string 
+- name: env
+  type: object
+  default:
+    dummy: "dummy"
 
 jobs:
 - job: Build
