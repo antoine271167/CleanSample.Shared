@@ -11,11 +11,11 @@ steps:
 - task: AzureCLI@2
   displayName: 'Create or Update a Resource Group'
   inputs:
-    azureSubscription: ${{parameters.azureSubscription}}
+    azureSubscription: ${{ parameters.azureSubscription }}
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
       echo "# Create resource group"
       az group create \
-        --name ${{parameters.resourceGroup}} \
-        --location ${{parameters.location}}
+        --name ${{ parameters.resourceGroup }} \
+        --location ${{ parameters.location }}

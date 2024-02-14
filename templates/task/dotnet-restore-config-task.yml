@@ -13,5 +13,5 @@ steps:
       command: restore
       projects: "**/*.csproj"
       feedsToUse: config
-      nugetConfigPath: ${{parameters.nugetConfigPath}}
-      externalFeedCredentials: ${{parameters.externalFeedCredentials}}
+      nugetConfigPath: ${{ parameters.nugetConfigPath }}
+      externalFeedCredentials: ${{ parameters.externalFeedCredentials }}

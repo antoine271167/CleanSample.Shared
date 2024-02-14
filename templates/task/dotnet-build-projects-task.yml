@@ -11,5 +11,5 @@ steps:
     displayName: "Dotnet Build"
     inputs:
       command: "build"
-      projects: ${{parameters.projects}}
+      projects: ${{ parameters.projects }}
       arguments: "--configuration ${{ parameters.configuration }}"

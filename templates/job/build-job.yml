@@ -1,0 +1,20 @@
+parameters:
+- name: buildProjectFile
+  type: string
+- name: testProjectFiles 
+  type: string 
+- name: env 
+  type: string 
+
+jobs:
+- job: Build
+  displayName: Build
+  steps:
+  - template: ../task/dotnet-restore-config-task.yml
+  - template: ../task/dotnet-build-projects-task.yml
+    parameters:
+      projects: ${{ parameters.buildProjectFile }}
+  - template: ../task/dotnet-test-projects-task.yml 
+    parameters:
+      projects: ${{ parameters.testProjectFiles }}
+      env: ${{ parameters.env }}
