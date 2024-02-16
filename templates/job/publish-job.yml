@@ -17,6 +17,12 @@ jobs:
   - template: ../task/dotnet-publish-projects-task.yml
     parameters:
       projects: ${{ parameters.publishProjectFiles }}
+  - task: ArchiveFiles@2
+    displayName: "Archive project files"
+    inputs:
+      rootFolderOrFile: $(Build.ArtifactStagingDirectory)/${{ parameters.projectFileName }}
+      includeRootFolder: false
+      archiveFile: $(Build.ArtifactStagingDirectory)/${{ parameters.projectFileName }}.zip
   - template: ../task/publish-pipeline-artifact-task.yml    
     parameters:
       targetPath: $(Build.ArtifactStagingDirectory)/${{ parameters.projectFileName }}
