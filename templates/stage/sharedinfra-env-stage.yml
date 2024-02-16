@@ -25,5 +25,5 @@ stages:
               inlineScript: |
                 az deployment sub create `
                   --location westeurope `
-                  --template-file $(Build.SourcesDirectory)\pipelines\${{ parameters.mainBicep }} `
+                  --template-file $(Build.SourcesDirectory)\main\${{ parameters.mainBicep }} `
                   --parameters resourcesName='$(resourcesName)'

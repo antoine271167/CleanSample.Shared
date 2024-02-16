@@ -19,5 +19,5 @@ steps:
     azureSubscription: ${{ parameters.azureSubscription }}
     appType: apiApp
     webAppName: ${{ parameters.appServiceName }}
-    packageForLinux: "$(System.Workspace)/${{ parameters.artifactName }}/${{ parameters.projectName }}.zip"
+    packageForLinux: "$(Pipeline.Workspace)/${{ parameters.artifactName }}/${{ parameters.projectName }}.zip"
     deploymentType: webDeploy

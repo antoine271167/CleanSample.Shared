@@ -6,20 +6,20 @@ pool:
 variables:
 - name: mainBicep
   value: cleansample-shared-infra.bicep
-- template: /vars/global.yml
+- template: vars/global.yml
 
 stages:
-- template: /templates/stage/sharedinfra-env-stage.yml
+- template: templates/stage/sharedinfra-env-stage.yml
   parameters:
     environmentName: dev
     mainBicep: $(mainBicep)
 
-# - template: /templates/stage/sharedinfra-env-stage.yml
+# - template: templates/stage/sharedinfra-env-stage.yml
 #   parameters:
 #     environmentName: tst
 #     mainBicep: $(mainBicep)
 
-# - template: /templates/stage/sharedinfra-env-stage.yml
+# - template: templates/stage/sharedinfra-env-stage.yml
 #   parameters:
 #     environmentName: prd
 #     mainBicep: $(mainBicep)
