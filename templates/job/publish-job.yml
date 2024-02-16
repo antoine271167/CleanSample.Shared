@@ -3,7 +3,7 @@ parameters:
   type: string
 - name: publishProjectFiles
   type: string
-- name: projectFileName 
+- name: projectName 
   type: string 
 
 jobs:
@@ -19,4 +19,4 @@ jobs:
       projects: ${{ parameters.publishProjectFiles }}
   - template: ../task/publish-pipeline-artifact-task.yml    
     parameters:
-      targetPath: $(Build.ArtifactStagingDirectory)/${{ parameters.projectFileName }}
+      targetPath: $(Build.ArtifactStagingDirectory)/${{ parameters.projectName }}
