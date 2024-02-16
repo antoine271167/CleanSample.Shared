@@ -17,4 +17,4 @@ stages:
     parameters:
       buildProjectFile: $(buildProjectFile)
       publishProjectFiles: $(publishProjectFiles)
-      projectFileName: $(projectName)
+      projectName: $(projectName)
