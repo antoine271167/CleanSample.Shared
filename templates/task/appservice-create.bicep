@@ -14,7 +14,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
   location: location
 }
 
-module appServicePlanModule '../modules/create-appserviceplan-module.bicep' = {
+module appServicePlanModule '../../modules/create-appserviceplan-module.bicep' = {
   name: 'appServicePlanModule'
   scope: resourceGroup
   params: {
@@ -28,7 +28,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' existing = {
   scope: resourceGroup
 }
 
-module appServiceModule '../modules/create-appservice-module.bicep' = {
+module appServiceModule '../../modules/create-appservice-module.bicep' = {
   name: 'appServiceModule'
   scope: resourceGroup
   dependsOn: [
