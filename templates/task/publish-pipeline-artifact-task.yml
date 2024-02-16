@@ -8,11 +8,13 @@ parameters:
 
 steps:
 - task: ArchiveFiles@2
+  displayName: Archive Files
   inputs:
     rootFolderOrFile: ${{ parameters.targetPath }}
     includeRootFolder: false
     archiveFile: ${{ parameters.targetPath }}.zip
 - task: PublishPipelineArtifact@1
+  displayName: Publish Pipeline Artifact
   inputs:
     artifactName: ${{ parameters.artifactName }}
     targetPath: ${{ parameters.targetPath }}.zip

@@ -1,19 +1,23 @@
 parameters:
 - name: azureSubscription
   type: string
+- name: appServiceName
+  type: string
 - name: artifactName
   type: string
   default: drop
-
+- name: projectName
+  type: string
+  
 steps:
 - download: current
   artifact: ${{ parameters.artifactName }}
 - task: AzureRmWebAppDeployment@4
-  displayName: "Deploy to app service"
+  displayName: "Deploy to AppService"
   inputs:
     connectionType: "AzureRM"
     azureSubscription: "${{ parameters.azureSubscription }}"
     appType: "apiApp"
-    webAppName: "${{ parameters.webAppName }}"
+    webAppName: "${{ parameters.appServiceName }}"
     packageForLinux: "$(System.ArtifactStagingDirectory)/**/${{ parameters.projectName }}.zip"
     deploymentType: "webDeploy"
