@@ -7,7 +7,12 @@ parameters:
   default: $(Build.ArtifactStagingDirectory)
 
 steps:
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: ${{ parameters.targetPath }}
+    includeRootFolder: false
+    archiveFile: ${{ parameters.targetPath }}.zip
 - task: PublishPipelineArtifact@1
   inputs:
     artifactName: ${{ parameters.artifactName }}
-    targetPath: ${{ parameters.targetPath }}
+    targetPath: ${{ parameters.targetPath }}.zip
