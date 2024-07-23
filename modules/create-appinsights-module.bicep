@@ -1,7 +1,7 @@
 targetScope = 'resourceGroup'
 
-param resourcesName string
-param functionAppName string = ''
+param appName string = ''
+param resourcesName string = appName
 param location string = resourceGroup().location
 
 var logAnalyticsWorkspaceName = '${toLower(resourcesName)}-la'
@@ -22,8 +22,8 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
   }
 }
 
-var tags = functionAppName == '' ? {} : {
-  'hidden-link:/subscriptions/${subscription().id}/resourceGroups/${resourceGroup().name}/providers/Microsoft.Web/sites/${functionAppName}': 'Resource'
+var tags = appName == '' ? {} : {
+  'hidden-link:/subscriptions/${subscription().id}/resourceGroups/${resourceGroup().name}/providers/Microsoft.Web/sites/${appName}': 'Resource'
 }
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {

@@ -6,7 +6,7 @@ param appSettings array = []
 param envAppSettings array = []
 
 var resourceGroupName = '${toLower(appName)}-rg'
-var appServicePlanName = '${toLower(appName)}-sp'
+var hostingPlanName = '${toLower(appName)}-hp'
 var appServiceName = '${toLower(appName)}-as'
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
@@ -14,17 +14,17 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
   location: location
 }
 
-module appServicePlanModule '../../modules/create-appserviceplan-module.bicep' = {
-  name: 'appServicePlanModule'
+module hostingPlanModule '../../modules/create-hostingplan-module.bicep' = {
+  name: 'hostingPlanModule'
   scope: resourceGroup
   params: {
     location: resourceGroup.location
-    appServicePlanName: appServicePlanName
+    hostingPlanName: hostingPlanName
   }
 }
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' existing = {
-  name: appServicePlanName
+resource hostingPlan 'Microsoft.Web/serverfarms@2020-06-01' existing = {
+  name: hostingPlanName
   scope: resourceGroup
 }
 
@@ -32,12 +32,12 @@ module appServiceModule '../../modules/create-appservice-module.bicep' = {
   name: 'appServiceModule'
   scope: resourceGroup
   dependsOn: [
-    appServicePlan
+    hostingPlan
   ]
   params: {
     location: resourceGroup.location
     appServiceName: appServiceName
-    appServicePlanId: appServicePlan.id
+    appServicePlanId: hostingPlan.id
     appSettings: union(appSettings, envAppSettings)
   }
 }

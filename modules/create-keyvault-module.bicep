@@ -1,5 +1,6 @@
 targetScope = 'resourceGroup'
 
+// If specified, we assume the function app requires access to the keyvault.
 param functionAppName string = ''
 param keyVaultName string
 param location string = resourceGroup().location
