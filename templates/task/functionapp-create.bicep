@@ -2,6 +2,8 @@ targetScope = 'subscription'
 
 param location string = 'westeurope'
 param appName string
+param appSettings array = []
+param envAppSettings array = []
 
 var resourceGroupName = '${toLower(appName)}-rg'
 var hostingPlanName = '${toLower(appName)}-hp'
@@ -57,5 +59,6 @@ module functionAppModule '../../modules/create-functionapp-module.bicep' = {
     keyVaultName: keyVaultName
     appInsightsName: appInsightsModule.outputs.applicationInsightsName
     storageAccountName: storageAccountName
+    appSettings: union(appSettings, envAppSettings)
   }
 }

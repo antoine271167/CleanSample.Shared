@@ -18,7 +18,7 @@ steps:
     inlineScript: |
       az deployment sub create `
         --location westeurope `
-        --template-file ./CleanSample.Shared/templates/task/appservice-create.bicep `
+        --template-file ./CleanSample.Shared/templates/task/functionapp-create.bicep `
         --parameters appName=${{ parameters.appName }} `
         --parameters ${{ parameters.appSettings }} `
         --parameters ${{ parameters.envAppSettings }}
