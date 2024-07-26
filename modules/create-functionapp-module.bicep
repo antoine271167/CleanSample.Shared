@@ -21,7 +21,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
-  name: storageAccountName
+  name: toLower(replace(storageAccountName, '-', ''))
 }
 
 resource storageAccountSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
