@@ -1,8 +1,6 @@
 parameters:
 - name: env
   type: object
-  default:
-    dummy: "dummy"
 
 stages:
 - stage: Build

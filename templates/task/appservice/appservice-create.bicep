@@ -1,20 +1,20 @@
 targetScope = 'subscription'
 
 param location string = 'westeurope'
-param appName string
+param appNameBase string
 param appSettings array = []
 param envAppSettings array = []
 
-var resourceGroupName = '${toLower(appName)}-rg'
-var hostingPlanName = '${toLower(appName)}-hp'
-var appServiceName = '${toLower(appName)}-as'
+var resourceGroupName = '${toLower(appNameBase)}-rg'
+var hostingPlanName = '${toLower(appNameBase)}-hp'
+var appServiceName = '${toLower(appNameBase)}-as'
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
   name: resourceGroupName
   location: location
 }
 
-module hostingPlanModule '../../modules/create-hostingplan-module.bicep' = {
+module hostingPlanModule '../../../modules/hostingplan.bicep' = {
   name: 'hostingPlanModule'
   scope: resourceGroup
   params: {
@@ -28,7 +28,7 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2020-06-01' existing = {
   scope: resourceGroup
 }
 
-module appServiceModule '../../modules/create-appservice-module.bicep' = {
+module appServiceModule '../../../modules/appservice.bicep' = {
   name: 'appServiceModule'
   scope: resourceGroup
   dependsOn: [

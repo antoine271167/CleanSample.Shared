@@ -1,5 +1,3 @@
-targetScope = 'resourceGroup'
-
 param hostingPlanName string
 param location string = resourceGroup().location
 

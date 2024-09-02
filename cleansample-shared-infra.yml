@@ -4,22 +4,20 @@ pool:
   vmImage: windows-latest
 
 variables:
-- name: mainBicep
-  value: cleansample-shared-infra.bicep
 - template: vars/global.yml
 
 stages:
 - template: templates/stage/sharedinfra-env-stage.yml
   parameters:
     environmentName: dev
-    mainBicep: $(mainBicep)
+    mainBicep: cleansample-shared-infra
 
 # - template: templates/stage/sharedinfra-env-stage.yml
 #   parameters:
 #     environmentName: tst
-#     mainBicep: $(mainBicep)
+#     mainBicep: cleansample-shared-infra
 
 # - template: templates/stage/sharedinfra-env-stage.yml
 #   parameters:
 #     environmentName: prd
-#     mainBicep: $(mainBicep)
+#     mainBicep: cleansample-shared-infra

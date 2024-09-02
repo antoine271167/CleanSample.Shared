@@ -10,7 +10,7 @@ parameters:
 
 steps:
 - task: AzureCLI@2
-  displayName: 'Create AppService'
+  displayName: 'Create ContainerApp'
   inputs:
     azureSubscription: ${{ parameters.azureSubscription }}
     scriptType: pscore
@@ -18,7 +18,7 @@ steps:
     inlineScript: |
       az deployment sub create `
         --location westeurope `
-        --template-file ./CleanSample.Shared/templates/task/appservice-create.bicep `
+        --template-file ./CleanSample.Shared/templates/task/containerapp/containerapp-create.bicep `
         --parameters appName=${{ parameters.appName }} `
         --parameters ${{ parameters.appSettings }} `
         --parameters ${{ parameters.envAppSettings }}

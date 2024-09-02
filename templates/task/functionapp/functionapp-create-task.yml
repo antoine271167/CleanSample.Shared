@@ -1,0 +1,24 @@
+parameters:
+- name: azureSubscription
+  type: string
+- name: appName
+  type: string
+- name: appSettings
+  type: string
+- name: envAppSettings
+  type: string
+
+steps:
+- task: AzureCLI@2
+  displayName: 'Create AppService'
+  inputs:
+    azureSubscription: ${{ parameters.azureSubscription }}
+    scriptType: pscore
+    scriptLocation: inlineScript
+    inlineScript: |
+      az deployment sub create `
+        --location westeurope `
+        --template-file ./CleanSample.Shared/templates/task/functionapp/functionapp-create.bicep `
+        --parameters appName=${{ parameters.appName }} `
+        --parameters ${{ parameters.appSettings }} `
+        --parameters ${{ parameters.envAppSettings }}

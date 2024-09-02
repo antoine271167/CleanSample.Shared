@@ -1,5 +1,3 @@
-targetScope = 'resourceGroup'
-
 param appServiceName string
 param appServicePlanId string
 param location string = resourceGroup().location

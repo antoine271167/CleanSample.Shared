@@ -7,7 +7,7 @@ parameters:
 stages:
 - stage: ${{ parameters.environmentName }}
   variables:
-    resourcesName: cleansample-${{ parameters.environmentName }}-shared
+    resourcesNameBase: cleansample-${{ parameters.environmentName }}-shared
   jobs:
   - deployment: ${{ parameters.environmentName }}InfraDeployment
     environment: cleansample-${{ parameters.environmentName }}
@@ -24,6 +24,7 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |
                 az deployment sub create `
-                  --location westeurope `
-                  --template-file $(Build.SourcesDirectory)\main\${{ parameters.mainBicep }} `
-                  --parameters resourcesName='$(resourcesName)'
+                  --template-file $(Build.SourcesDirectory)\main\${{ parameters.mainBicep }}.bicep `
+                  --parameters $(Build.SourcesDirectory)\main\${{ parameters.mainBicep }}.bicepparam
+            env:
+              resourcesNameBase: $(resourcesNameBase)

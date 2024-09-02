@@ -1,5 +1,3 @@
-targetScope = 'resourceGroup'
-
 param functionAppName string
 param hostingPlanName string
 param keyVaultName string
