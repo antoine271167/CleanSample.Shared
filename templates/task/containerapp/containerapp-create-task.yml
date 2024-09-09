@@ -1,7 +1,7 @@
 parameters:
 - name: azureSubscription
   type: string
-- name: appName
+- name: appNameBase
   type: string
 - name: appSettings
   type: string
@@ -19,6 +19,6 @@ steps:
       az deployment sub create `
         --location westeurope `
         --template-file ./CleanSample.Shared/templates/task/containerapp/containerapp-create.bicep `
-        --parameters appName=${{ parameters.appName }} `
+        --parameters appNameBase=${{ parameters.appNameBase }} `
         --parameters ${{ parameters.appSettings }} `
         --parameters ${{ parameters.envAppSettings }}
