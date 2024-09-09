@@ -4,6 +4,7 @@ param location string = 'westeurope'
 param appNameBase string
 param appSettings array = []
 param envAppSettings array = []
+var allAppSettings = union(appSettings, envAppSettings)
 
 var resourceGroupName = '${toLower(appNameBase)}-rg'
 var hostingPlanName = '${toLower(appNameBase)}-hp'
@@ -63,7 +64,7 @@ module functionAppModule '../../../modules/functionapp.bicep' = {
     keyVaultName: keyVaultName
     appInsightsName: appInsightName
     storageAccountName: storageAccountName
-    appSettings: union(appSettings, envAppSettings)
+    appSettings: allAppSettings
   }
 }
 

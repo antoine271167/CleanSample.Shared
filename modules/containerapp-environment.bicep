@@ -4,6 +4,7 @@ param location string = resourceGroup().location
 param appInsightKey string
 param infrastructureSubnetId string
 param laWorkspaceName string
+param appSettings array = []
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: laWorkspaceName

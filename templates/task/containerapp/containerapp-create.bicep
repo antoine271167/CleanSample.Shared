@@ -2,6 +2,9 @@ targetScope = 'subscription'
 
 param location string = 'westeurope'
 param appNameBase string
+param appSettings array = []
+param envAppSettings array = []
+var allAppSettings = union(appSettings, envAppSettings)
 
 var vnetName = '${toLower(appNameBase)}-vnet'
 var resourceGroupName = '${toLower(appNameBase)}-rg'
@@ -22,7 +25,7 @@ module virtualNetworkModule '../../../modules/virtual-network.bicep' = {
   scope: resourceGroup
   params: {
     vnetName: vnetName
-    location: location    
+    location: location
   }
 }
 
@@ -35,7 +38,7 @@ module uamiModule '../../../modules/userassigned-managedidentity.bicep' = {
   }
 }
 
-module containerRegistryModule  '../../../modules/containerregistry.bicep' = {
+module containerRegistryModule '../../../modules/containerregistry.bicep' = {
   name: 'containerRegistryModule'
   scope: resourceGroup
   params: {
@@ -65,7 +68,7 @@ module keyVaultModule '../../../modules/keyvault.bicep' = {
       'list'
     ]
     location: location
-    skuName: 'standard'  
+    skuName: 'standard'
   }
 }
 
@@ -97,5 +100,6 @@ module acaEnvironmentModule '../../../modules/containerapp-environment.bicep' = 
     location: location
     envrionmentName: containerAppEnvironmentName
     laWorkspaceName: logAnalyticsName
+    appSettings: allAppSettings
   }
 }
