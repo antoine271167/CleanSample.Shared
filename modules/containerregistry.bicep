@@ -6,7 +6,7 @@ param skuName string = 'Basic'
 param userAssignedIdentityPrincipalId string = ''
 
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-06-01-preview' = {
-  name: registryName
+  name: toLower(replace(registryName, '-', ''))
   location: location
   sku: {
     name: skuName
