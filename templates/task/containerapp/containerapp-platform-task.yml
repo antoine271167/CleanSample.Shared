@@ -7,6 +7,8 @@ parameters:
   type: string
 - name: envAppSettings
   type: string
+- name: environmentName
+  type: string
 
 steps:
 - task: AzureCLI@2
@@ -18,7 +20,8 @@ steps:
     inlineScript: |
       az deployment sub create `
         --location westeurope `
-        --template-file ./CleanSample.Shared/templates/task/containerapp/containerapp-create.bicep `
+        --template-file ./CleanSample.Shared/templates/task/containerapp/containerapp-platform.bicep `
         --parameters appNameBase=${{ parameters.appNameBase }} `
         --parameters ${{ parameters.appSettings }} `
-        --parameters ${{ parameters.envAppSettings }}
+        --parameters ${{ parameters.envAppSettings }} `
+        --parameters environmentName=${{ parameters.environmentName }}

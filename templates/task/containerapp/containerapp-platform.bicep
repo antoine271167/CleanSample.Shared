@@ -4,8 +4,9 @@ param location string = 'westeurope'
 param appNameBase string
 param appSettings array = []
 param envAppSettings array = []
-var allAppSettings = union(appSettings, envAppSettings)
+param environmentName string
 
+var allAppSettings = union(appSettings, envAppSettings)
 var vnetName = '${toLower(appNameBase)}-vnet'
 var resourceGroupName = '${toLower(appNameBase)}-rg'
 var uamiName = '${toLower(appNameBase)}-uami'
@@ -14,6 +15,7 @@ var keyVaultName = '${toLower(appNameBase)}-kv'
 var logAnalyticsName = '${toLower(appNameBase)}-la'
 var appInsightName = '${toLower(appNameBase)}-ai'
 var containerAppEnvironmentName = '${toLower(appNameBase)}-acae'
+var apiManagementName = '${toLower(appNameBase)}-apim'
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
   name: resourceGroupName
@@ -81,7 +83,7 @@ module logAnalyticsModule '../../../modules/loganalytics.bicep' = {
   }
 }
 
-module appInsights '../../../modules/appinsights.bicep' = {
+module appInsightsModule '../../../modules/appinsights.bicep' = {
   name: 'appInsightsModule'
   scope: resourceGroup
   params: {
@@ -95,11 +97,27 @@ module acaEnvironmentModule '../../../modules/containerapp-environment.bicep' = 
   name: 'acaEnvironmentModule'
   scope: resourceGroup
   params: {
-    appInsightKey: appInsights.outputs.InstrumentationKey
+    appInsightKey: appInsightsModule.outputs.InstrumentationKey
     infrastructureSubnetId: virtualNetworkModule.outputs.defaultSubnetId
     location: location
     envrionmentName: containerAppEnvironmentName
     laWorkspaceName: logAnalyticsName
     appSettings: allAppSettings
+  }
+}
+
+module apiManagementModule '../../../modules/api-management.bicep' = {
+  name: 'apiManagementModule'
+  scope: resourceGroup
+  params: {
+    apimServiceName: apiManagementName
+    location: location
+    sku: 'Developer' // (Premium | Standard | Developer | Basic | Consumption)
+    skuCount: 1
+    publisherEmail: 'antoine@geboersjes.nl'
+    publisherName: 'Antoine Geboers'
+    publicIpAddressName: '${appNameBase}-publicip-${environmentName}'
+    subnetName: virtualNetworkModule.outputs.apimSubnetName
+    virtualNetworkName: virtualNetworkModule.name
   }
 }

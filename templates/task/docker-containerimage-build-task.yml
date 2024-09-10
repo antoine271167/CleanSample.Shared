@@ -1,0 +1,24 @@
+parameters:
+- name: azureSubscription
+  type: string
+- name: registryUri
+  type: string
+- name: imageName
+  type: string
+- name: tag
+  type: string
+- name: dockerFile
+  type: string
+
+steps:
+- task: AzureCLI@2
+  displayName: 'Build Docker Container Image'
+  inputs:
+    azureSubscription: ${{ parameters.azureSubscription }}
+    scriptType: pscore
+    scriptLocation: inlineScript
+    inlineScript: |
+      $accessToken = az acr login --name ${{ parameters.registryUri }} --expose-token --output tsv --query accessToken
+      docker login ${{ parameters.registryUri }} --username 00000000-0000-0000-0000-000000000000 --password $accessToken
+      docker build -t ${{ parameters.registryUri }}/${{ parameters.imageName }}:${{ parameters.tag }} -f ${{ parameters.dockerFile }} .
+      docker push ${{ parameters.registryUri }}/${{ parameters.imageName }}:${{ parameters.tag }}
