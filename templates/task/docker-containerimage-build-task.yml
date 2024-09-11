@@ -25,7 +25,6 @@ steps:
       Write-Host "Building image with Tag '${{ parameters.imageName }}:${{ parameters.tag }}'"
       Write-Host "DockerFile '${{ parameters.dockerFile }}'"
       docker build -t ${{ parameters.registryUri }}/${{ parameters.imageName }}:${{ parameters.tag }} -f ${{ parameters.dockerFile }} .
-      docker images
       
       Write-Host "Pushing to '${{ parameters.registryUri }}'"
       docker image push ${{ parameters.registryUri }}/${{ parameters.imageName }}:${{ parameters.tag }}
