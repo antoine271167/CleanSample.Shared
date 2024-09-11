@@ -18,7 +18,12 @@ steps:
     scriptType: pscore
     scriptLocation: inlineScript
     inlineScript: |
+      Write-Host "Login to Azure Container Registry: ${{ parameters.registryUri }}"
       $accessToken = az acr login --name ${{ parameters.registryUri }} --expose-token --output tsv --query accessToken
       docker login ${{ parameters.registryUri }} --username 00000000-0000-0000-0000-000000000000 --password $accessToken
+
+      Write-Host "Building image with Tag '${{ parameters.imageName }}:${{ parameters.tag }}'"
       docker build -t ${{ parameters.registryUri }}/${{ parameters.imageName }}:${{ parameters.tag }} -f ${{ parameters.dockerFile }} .
+      
+      Write-Host "Pushing to '${{ parameters.registryUri }}'"
       docker push ${{ parameters.registryUri }}/${{ parameters.imageName }}:${{ parameters.tag }}
