@@ -9,6 +9,8 @@ parameters:
   type: string
 - name: dockerFile
   type: string
+- name: context
+  type: string
 
 steps:
 - task: AzureCLI@2
@@ -18,6 +20,7 @@ steps:
     scriptType: pscore
     scriptLocation: inlineScript
     inlineScript: |
+      cd ${{ parameters.context }}
       Write-Host "Login to Azure Container Registry: ${{ parameters.registryUri }}"
       $accessToken = az acr login --name ${{ parameters.registryUri }} --expose-token --output tsv --query accessToken
       docker login ${{ parameters.registryUri }} --username 00000000-0000-0000-0000-000000000000 --password $accessToken
