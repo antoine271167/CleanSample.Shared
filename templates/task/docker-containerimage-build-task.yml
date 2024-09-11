@@ -23,6 +23,7 @@ steps:
       docker login ${{ parameters.registryUri }} --username 00000000-0000-0000-0000-000000000000 --password $accessToken
 
       Write-Host "Building image with Tag '${{ parameters.imageName }}:${{ parameters.tag }}'"
+      Write-Host "DockerFile '${{ parameters.dockerFile }}'"
       docker build -t ${{ parameters.registryUri }}/${{ parameters.imageName }}:${{ parameters.tag }} -f ${{ parameters.dockerFile }} .
       
       Write-Host "Pushing to '${{ parameters.registryUri }}'"
