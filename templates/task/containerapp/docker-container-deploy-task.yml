@@ -7,9 +7,7 @@ parameters:
   type: string
 - name: tag
   type: string
-- name: dockerFile
-  type: string
-- name: context
+- name: dockerContext
   type: string
 
 steps:
@@ -20,14 +18,16 @@ steps:
     scriptType: pscore
     scriptLocation: inlineScript
     inlineScript: |
-      cd ${{ parameters.context }}
+      Write-Host "Set Docker Context to: ${{ parameters.dockerContext }}"
+      cd ${{ parameters.dockerContext }}
+
       Write-Host "Login to Azure Container Registry: ${{ parameters.registryUri }}"
       $accessToken = az acr login --name ${{ parameters.registryUri }} --expose-token --output tsv --query accessToken
       docker login ${{ parameters.registryUri }} --username 00000000-0000-0000-0000-000000000000 --password $accessToken
 
       Write-Host "Building image with Tag '${{ parameters.imageName }}:${{ parameters.tag }}'"
       Write-Host "DockerFile '${{ parameters.dockerFile }}'"
-      docker build -t ${{ parameters.registryUri }}/${{ parameters.imageName }}:${{ parameters.tag }} -f ${{ parameters.dockerFile }} .
+      docker build -t ${{ parameters.registryUri }}/${{ parameters.imageName }}:${{ parameters.tag }} .
       
       Write-Host "Pushing to '${{ parameters.registryUri }}'"
       docker image push ${{ parameters.registryUri }}/${{ parameters.imageName }}:${{ parameters.tag }}
